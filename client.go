@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -14,6 +13,7 @@ type CelcoinClient struct {
 	client   *http.Client
 	Username string
 	Password string
+	Env      string
 }
 
 type Error struct {
@@ -22,11 +22,12 @@ type Error struct {
 	Body      string `json:"body"`
 }
 
-func NewCelcoinClient(username, password string) *CelcoinClient {
+func NewCelcoinClient(username, password, env string) *CelcoinClient {
 	return &CelcoinClient{
 		client:   &http.Client{Timeout: 60 * time.Second},
 		Username: username,
 		Password: password,
+		Env:      env,
 	}
 }
 
@@ -64,7 +65,7 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 }
 
 func (CelcoinClient *CelcoinClient) devProd() string {
-	if os.Getenv("ENV") == "develop" {
+	if CelcoinClient.Env == "develop" {
 		return "https://sandbox-apicorp.celcoin.com.br/v4"
 	}
 	return "https://sandbox-apicorp.celcoin.com.br/v4"

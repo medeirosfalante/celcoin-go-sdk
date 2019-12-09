@@ -81,6 +81,18 @@ type BillPaymentAuthorizeResponse struct {
 	DocumentPayer string              `json:"documentPayer"`
 }
 
+//CaptureResponse - Objeto de retorno capture
+type CaptureResponse struct {
+	ErrorCode string `json:"errorCode"`
+	Message   string `json:"message"`
+	Status    int32  `json:"status"`
+}
+
+type CaptureRequest struct {
+	ExternalNSU      int32  `json:"externalNSU"`
+	ExternalTerminal string `json:"externalTerminal"`
+}
+
 //BillPayments - Criar um pagamento
 func (celcoin *CelcoinClient) BillPayments(req BillPayment) (*BillPayment, *Error, error) {
 	data, _ := json.Marshal(req)
@@ -106,6 +118,19 @@ func (celcoin *CelcoinClient) BillPaymentsAuthorize(req BillPaymentAuthorize) (*
 	if errAPI != nil {
 		return nil, errAPI, nil
 	}
-	fmt.Printf("BillPaymentAuthorizeResponse %#v", response)
+	return response, nil, nil
+}
+
+//GetBillPayments - Criar um autorização de pagamento
+func (celcoin *CelcoinClient) GetBillPayments(transactionId string) (*CaptureResponse, *Error, error) {
+	data, _ := json.Marshal(&CaptureRequest{})
+	var response *CaptureResponse
+	err, errAPI := celcoin.Request("PUT", fmt.Sprintf("transactions/billpayments/%s/capture", transactionId), data, &response)
+	if err != nil {
+		return nil, nil, err
+	}
+	if errAPI != nil {
+		return nil, errAPI, nil
+	}
 	return response, nil, nil
 }

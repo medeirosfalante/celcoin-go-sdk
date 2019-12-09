@@ -10,7 +10,7 @@ import (
 
 func TestBillPayments(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"))
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"))
 	barcode := celcoin.BarCode{
 		Type:      0,
 		Digitable: os.Getenv("CELCOIN_TEST_BOLETO_DIGITABLE"),
@@ -66,7 +66,7 @@ func TestBillPayments(t *testing.T) {
 
 func TestBillPaymentsAuthorize(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"))
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"))
 	barcode := celcoin.BarCode{
 		Type:      0,
 		Digitable: os.Getenv("CELCOIN_TEST_BOLETO_DIGITABLE"),
@@ -87,6 +87,25 @@ func TestBillPaymentsAuthorize(t *testing.T) {
 		return
 	}
 	if payAuthorizeResponse == nil {
+		t.Error("payResponse is null")
+		return
+	}
+
+}
+
+func TestGetBillPayments(t *testing.T) {
+	godotenv.Load(".env.test")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"))
+	paymentResponse, errAPI, err := client.GetBillPayments(os.Getenv("CELCOIN_TRANSACTIONID"))
+	if err != nil {
+		t.Errorf("err : %s", err)
+		return
+	}
+	if errAPI != nil {
+		t.Errorf("errAPI : %#v", errAPI)
+		return
+	}
+	if paymentResponse == nil {
 		t.Error("payResponse is null")
 		return
 	}

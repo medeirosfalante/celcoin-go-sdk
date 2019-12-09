@@ -14,6 +14,7 @@ type BillPayment struct {
 	BarCode                BarCode  `json:"barCode"`
 	DueDate                string   `json:"dueDate"`
 	TransactionIDAuthorize int32    `json:"transactionIdAuthorize"`
+	TransactionID          int32    `json:"transactionId"`
 }
 
 //BillPaymentAuthorize - Modelo para criação de autorização de pagamento

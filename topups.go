@@ -39,6 +39,7 @@ type TopupsResponse struct {
 	ErrorCode         string                `json:"errorCode"`
 	Message           string                `json:"message"`
 	Status            int                   `json:"status"`
+	Receiptformatted  string                `json:"receiptformatted"`
 }
 
 //TopupsReceiptResponse - Modelo Dados Recebedor

@@ -12,18 +12,27 @@ func TestBankslip(t *testing.T) {
 	godotenv.Load(".env.test")
 	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"))
 	bankslipRequest := celcoin.BankslipRequest{
-		Document: "602.505.310-38",
-		Value:    10,
-		PayerAddress: celcoin.BankslipPayerAddressRequest{
-			ZipCode:    "90680-530",
-			City:       "Porto Alegre",
-			Additional: "",
-			Street:     "Rua Rita Barem",
-			State:      "RS",
+		Values: celcoin.BankslipValues{
+			OriginalValue: 100,
 		},
-		PayerName:    "Laura Rayssa",
-		ResponseType: 3,
+		Payer: celcoin.BankslipPayer{
+			Name:         "Nicole Manuela Fátima Gonçalves",
+			DocumentType: "pf",
+			Document:     "69053291423",
+			Address:      "Rua Florianópolis",
+			District:     "Liberdade",
+			City:         "Cacoal",
+			State:        "RO",
+			ZipCode:      "76967-412",
+			Email:        "test@gmail.com",
+			Ddd:          "69",
+			PhoneNumber:  "26640502",
+		},
 		DueDate:      "2019-12-11T02:06:53.374Z",
+		DaysToExpire: 3,
+		Instructions: celcoin.BankslipInstructionsRequest{
+			Instruction1: "Teste",
+		},
 	}
 	payAuthorizeResponse, errAPI, err := client.Bankslip(bankslipRequest)
 	if err != nil {

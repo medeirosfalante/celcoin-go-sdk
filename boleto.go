@@ -6,37 +6,38 @@ import (
 
 //BankslipRequest - Modelo para criação de um boleto
 type BankslipRequest struct {
-	Document         string                        `json:"document"`
-	IPAddress        string                        `json:"ipAddress"`
-	HashIntegration  string                        `json:"hashIntegration"`
-	ExternalTerminal string                        `json:"externalTerminal"`
-	Value            float32                       `json:"value"`
-	BranchCode       int                           `json:"branchCode"`
-	InstitutionCode  int                           `json:"institutionCode"`
-	WalletCode       int                           `json:"walletCode"`
-	Covenant         string                        `json:"covenant"`
-	AccountCode      int                           `json:"accountCode"`
-	DigitCode        string                        `json:"digitCode"`
-	PayerAddress     BankslipPayerAddressRequest   `json:"payerAddress"`
-	Instructions     []BankslipInstructionsRequest `json:"instructions"`
-	AccountType      int                           `json:"accountType"`
-	PayerName        string                        `json:"payerName"`
-	ResponseType     int                           `json:"responseType"`
-	DueDate          string                        `json:"dueDate"`
+	Payer        BankslipPayer               `json:"payer"`
+	Instructions BankslipInstructionsRequest `json:"instructions"`
+	DueDate      string                      `json:"dueDate"`
+	Values       BankslipValues              `json:"values"`
+	DaysToExpire int32                       `json:"daysToExpire"`
 }
 
 //BankslipPayerAddressRequest - Modelo de endereço do cliente
-type BankslipPayerAddressRequest struct {
-	ZipCode    string `json:"zipCode"`
-	City       string `json:"city"`
-	Additional string `json:"additional"`
-	Street     string `json:"street"`
-	State      string `json:"state"`
+type BankslipPayer struct {
+	Name         string `json:"name"`
+	DocumentType string `json:"document_type"`
+	Document     string `json:"document"`
+	Address      string `json:"address"`
+	District     string `json:"district"`
+	City         string `json:"city"`
+	State        string `json:"state"`
+	ZipCode      string `json:"zipCode"`
+	Email        string `json:"email"`
+	Ddd          string `json:"ddd"`
+	PhoneNumber  string `json:"phoneNumber"`
+}
+type BankslipValues struct {
+	OriginalValue float32 `json:"originalValue"`
 }
 
 //BankslipInstructionsRequest - Modelo para instruições do boleto
 type BankslipInstructionsRequest struct {
-	Text string `json:"text"`
+	Instruction1 string `json:"instruction1"`
+	Instruction2 string `json:"instruction2"`
+	Instruction3 string `json:"instruction3"`
+	Instruction4 string `json:"instruction4"`
+	Instruction5 string `json:"instruction5"`
 }
 
 //Bankslip - Criar boleto

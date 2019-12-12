@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 )
@@ -35,7 +36,10 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 	if celcoin.client == nil {
 		celcoin.client = &http.Client{Timeout: 60 * time.Second}
 	}
+
 	endpoint := fmt.Sprintf("%s/%s", celcoin.devProd(), action)
+	log.Printf("\n\n body %s\n\n", body)
+	log.Printf("\n\n endpoint %s\n\n", endpoint)
 	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(body))
 	if err != nil {
 		return err, nil
@@ -47,6 +51,7 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 		return err, nil
 	}
 	bodyResponse, err := ioutil.ReadAll(res.Body)
+	log.Printf("\n\n response %s\n\n", bodyResponse)
 	if res.StatusCode > 201 {
 
 		var errAPI Error

@@ -3,6 +3,7 @@ package celcoin_test
 import (
 	"os"
 	"testing"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/rafaeltokyo/celcoin-go-sdk"
@@ -16,19 +17,19 @@ func TestBankslip(t *testing.T) {
 			OriginalValue: 100,
 		},
 		Payer: celcoin.BankslipPayer{
-			Name:         "Nicole Manuela Fátima Gonçalves",
-			DocumentType: "pf",
-			Document:     "69053291423",
-			Address:      "Rua Florianópolis",
-			District:     "Liberdade",
-			City:         "Cacoal",
-			State:        "RO",
-			ZipCode:      "76967-412",
+			Name:         "Ryan Cauã Felipe Araújo",
+			DocumentType: "CPF",
+			Document:     "80213959828",
+			Address:      "Rua Francisco Alves",
+			District:     "Jardim Sônia Maria",
+			City:         "Mauá",
+			UF:           "SP",
+			ZipCode:      "09380360",
 			Email:        "test@gmail.com",
-			Ddd:          "69",
-			PhoneNumber:  "26640502",
+			Ddd:          "11",
+			PhoneNumber:  "982245864",
 		},
-		DueDate:      "2019-12-11T02:06:53.374Z",
+		DueDate:      time.Now().AddDate(0, 0, 3).Format(time.RFC3339),
 		DaysToExpire: 3,
 		Instructions: celcoin.BankslipInstructionsRequest{
 			Instruction1: "Teste",

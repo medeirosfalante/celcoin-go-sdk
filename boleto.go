@@ -13,6 +13,28 @@ type BankslipRequest struct {
 	DaysToExpire int32                       `json:"daysToExpire"`
 }
 
+//BankslipReceipt - Dados do recebedor
+type BankslipReceipt struct {
+	ReceiptData      string `json:"receiptData"`
+	Receiptformatted string `json:"receiptformatted"`
+}
+
+//BankslipResponse - Resposta na geração do boleto
+type BankslipResponse struct {
+	CodeBarras     string          `json:"codeBarras"`
+	Digitable      string          `json:"digitable"`
+	BinaryPDF      string          `json:"binaryPDF"`
+	Authentication int32           `json:"authentication"`
+	Receipt        BankslipReceipt `json:"receipt"`
+	SettleDate     string          `json:"settleDate"`
+	CreateDate     string          `json:"createDate"`
+	TransactionID  int32           `json:"transactionId"`
+	Urlreceipt     string          `json:"Urlreceipt"`
+	ErrorCode      string          `json:"errorCode"`
+	Message        string          `json:"message"`
+	Status         int32           `json:"status"`
+}
+
 //BankslipPayerAddressRequest - Modelo de endereço do cliente
 type BankslipPayer struct {
 	Name         string `json:"name"`
@@ -21,7 +43,7 @@ type BankslipPayer struct {
 	Address      string `json:"address"`
 	District     string `json:"district"`
 	City         string `json:"city"`
-	State        string `json:"state"`
+	UF           string `json:"uf"`
 	ZipCode      string `json:"zipCode"`
 	Email        string `json:"email"`
 	Ddd          string `json:"ddd"`
@@ -41,9 +63,9 @@ type BankslipInstructionsRequest struct {
 }
 
 //Bankslip - Criar boleto
-func (celcoin *CelcoinClient) Bankslip(req BankslipRequest) (*BankslipRequest, *Error, error) {
+func (celcoin *CelcoinClient) Bankslip(req BankslipRequest) (*BankslipResponse, *Error, error) {
 	data, _ := json.Marshal(req)
-	var response *BankslipRequest
+	var response *BankslipResponse
 	err, errAPI := celcoin.Request("POST", "transactions/bankslip", data, &response)
 	if err != nil {
 		return nil, nil, err

@@ -2,6 +2,7 @@ package celcoin
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 //BankslipRequest - Modelo para criação de um boleto
@@ -35,7 +36,7 @@ type BankslipResponse struct {
 	Status         int32           `json:"status"`
 }
 
-//BankslipPayerAddressRequest - Modelo de endereço do cliente
+//BankslipPayer - Modelo do cliente
 type BankslipPayer struct {
 	Name         string `json:"name"`
 	DocumentType string `json:"document_type"`
@@ -49,6 +50,8 @@ type BankslipPayer struct {
 	Ddd          string `json:"ddd"`
 	PhoneNumber  string `json:"phoneNumber"`
 }
+
+//BankslipValues - valor original para criar boleto
 type BankslipValues struct {
 	OriginalValue float32 `json:"originalValue"`
 }
@@ -62,11 +65,43 @@ type BankslipInstructionsRequest struct {
 	Instruction5 string `json:"instruction5"`
 }
 
+//TransactionResponse - corpo da resposta da transação
+type TransactionResponse struct {
+	Transaction *Transaction `json:"transaction"`
+	ErrorCode   string       `json:"errorCode"`
+	Message     string       `json:"message"`
+	Status      int          `json:"status"`
+}
+
+//Transaction - strutura da transação
+type Transaction struct {
+	Authentication int32  `json:"authentication"`
+	ErrorCode      string `json:"errorCode"`
+	CreateDate     string `json:"createDate"`
+	Message        string `json:"message"`
+	ExternalNSU    string `json:"externalNSU"`
+	TransactionID  int32  `json:"transactionId"`
+	Status         int    `json:"status"`
+}
+
 //Bankslip - Criar boleto
 func (celcoin *CelcoinClient) Bankslip(req BankslipRequest) (*BankslipResponse, *Error, error) {
 	data, _ := json.Marshal(req)
 	var response *BankslipResponse
 	err, errAPI := celcoin.Request("POST", "transactions/bankslip", data, &response)
+	if err != nil {
+		return nil, nil, err
+	}
+	if errAPI != nil {
+		return nil, errAPI, nil
+	}
+	return response, nil, nil
+}
+
+//GetTransactionStatus - status da transação
+func (celcoin *CelcoinClient) GetTransactionStatus(transactionID string) (*TransactionResponse, *Error, error) {
+	var response *TransactionResponse
+	err, errAPI := celcoin.Request("GET", fmt.Sprintf("transactions/status-consult?transactionId=%s", transactionID), nil, &response)
 	if err != nil {
 		return nil, nil, err
 	}

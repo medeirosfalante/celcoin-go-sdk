@@ -5,20 +5,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
 )
 
 type CelcoinClient struct {
-	client     *http.Client
-	Username   string
-	Password   string
-	Env        string
-	Version    string
-	ExpiteTime int64
-	Token      string
+	client      *http.Client
+	Username    string
+	Password    string
+	Env         string
+	ExpiteTime  int64
+	Token       string
+	Openfinance bool
 }
 
 type Error struct {
@@ -33,13 +32,13 @@ type TokenResponse struct {
 	RokenType   string `json:"token_type"`
 }
 
-func NewCelcoinClient(username, password, env, version string) *CelcoinClient {
+func NewCelcoinClient(username, password, env string, openfinance bool) *CelcoinClient {
 	return &CelcoinClient{
-		client:   &http.Client{Timeout: 60 * time.Second},
-		Username: username,
-		Password: password,
-		Env:      env,
-		Version:  version,
+		client:      &http.Client{Timeout: 60 * time.Second},
+		Username:    username,
+		Password:    password,
+		Env:         env,
+		Openfinance: openfinance,
 	}
 }
 
@@ -47,37 +46,29 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 	if celcoin.client == nil {
 		celcoin.client = &http.Client{Timeout: 60 * time.Second}
 	}
+	url := celcoin.devProd()
+	if celcoin.Openfinance {
+		url = celcoin.openfinanceUrl()
+	}
 
-	endpoint := fmt.Sprintf("%s/%s", celcoin.devProd(), action)
+	endpoint := fmt.Sprintf("%s/%s", url, action)
 	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(body))
 	if err != nil {
 		return err, nil
 	}
 
-	log.Printf("\n\n endpoint %s\n\n", string(endpoint))
-
-	req.Header.Add("Content-Type", "application/json")
-
-	switch celcoin.Version {
-	case "v4":
-		req.SetBasicAuth(celcoin.Username, celcoin.Password)
-	case "v5":
-		_, err := celcoin.RequestToken()
-		if err != nil {
-			return err, nil
-		}
-
-		log.Printf("\n\n token %s\n\n", fmt.Sprintf("Bearer %s", celcoin.Token))
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", celcoin.Token))
+	_, err = celcoin.RequestToken()
+	if err != nil {
+		return err, nil
 	}
 
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", celcoin.Token))
 	res, err := celcoin.client.Do(req)
 	if err != nil {
 		return err, nil
 	}
 	bodyResponse, err := ioutil.ReadAll(res.Body)
-
-	log.Printf("\n\n bodyResponse %s\n\n", string(bodyResponse))
 	if res.StatusCode > 201 {
 		var errAPI Error
 		err = json.Unmarshal(bodyResponse, &errAPI)
@@ -96,9 +87,23 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 
 func (CelcoinClient *CelcoinClient) devProd() string {
 	if CelcoinClient.Env == "develop" {
-		return fmt.Sprintf("https://sandbox-apicorp.celcoin.com.br/%s", CelcoinClient.Version)
+		return "https://sandbox-apicorp.celcoin.com.br/v5"
 	}
-	return fmt.Sprintf("https://sandbox-apicorp.celcoin.com.br/%s", CelcoinClient.Version)
+	return "https://sandbox-apicorp.celcoin.com.br/v5"
+}
+
+func (CelcoinClient *CelcoinClient) TokenUri() string {
+	if CelcoinClient.Env == "develop" {
+		return "https://sandbox-apicorp.celcoin.com.br/v5"
+	}
+	return "https://sandbox-apicorp.celcoin.com.br/v5"
+}
+
+func (CelcoinClient *CelcoinClient) openfinanceUrl() string {
+	if CelcoinClient.Env == "develop" {
+		return "https://sandbox.openfinance.celcoin.com.br"
+	}
+	return "https://sandbox.openfinance.celcoin.com.br"
 }
 
 func (celcoin *CelcoinClient) RequestToken() (*TokenResponse, error) {
@@ -111,7 +116,7 @@ func (celcoin *CelcoinClient) RequestToken() (*TokenResponse, error) {
 		"grant_type":    {"client_credentials"},
 		"client_secret": {celcoin.Password},
 	}
-	endpoint := fmt.Sprintf("%s/%s", celcoin.devProd(), "token")
+	endpoint := fmt.Sprintf("%s/%s", celcoin.TokenUri(), "token")
 	res, err := http.PostForm(endpoint, data)
 	if err != nil {
 		return nil, err

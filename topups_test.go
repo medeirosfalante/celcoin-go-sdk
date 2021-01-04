@@ -10,7 +10,7 @@ import (
 
 func TestCreateTopupsDigitalProvider(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), "v5")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 
 	TopupsRequest := celcoin.TopupsRequest{
 		TopupData: celcoin.TopupData{
@@ -43,7 +43,7 @@ func TestCreateTopupsDigitalProvider(t *testing.T) {
 }
 func TestListTopupsProvider(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), "v5")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 
 	TopupsResponse, errAPI, err := client.ListTopupsProvider("21", "2", "0")
 	if err != nil {
@@ -62,7 +62,7 @@ func TestListTopupsProvider(t *testing.T) {
 }
 func TestListTopupsProviderValues(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), "v5")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 	TopupsResponse, errAPI, err := client.ListTopupsProviderValues("21", "2132")
 	if err != nil {
 		t.Errorf("err : %s", err)

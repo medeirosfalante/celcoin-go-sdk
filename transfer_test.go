@@ -10,7 +10,7 @@ import (
 
 func TestBankTransfer(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), "v5")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 	bankTransfer := celcoin.BankTransfer{
 		Document:        "80213959828",
 		AccountCode:     100,
@@ -38,7 +38,7 @@ func TestBankTransfer(t *testing.T) {
 
 func TestBankTransferStatus(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), "v5")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 	payAuthorizeResponse, errAPI, err := client.BankTransferStatus(3725218)
 	if err != nil {
 		t.Errorf("err : %s", err)

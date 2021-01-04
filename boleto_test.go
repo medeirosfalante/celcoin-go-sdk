@@ -12,7 +12,7 @@ import (
 
 func TestBankslip(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"))
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 	bankslipRequest := celcoin.BankslipRequest{
 		Values: celcoin.BankslipValues{
 			OriginalValue: 100,
@@ -53,7 +53,7 @@ func TestBankslip(t *testing.T) {
 
 func TestGetTransactionStatus(t *testing.T) {
 	godotenv.Load(".env.test")
-	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"))
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), false)
 	bankslipRequest := celcoin.BankslipRequest{
 		Values: celcoin.BankslipValues{
 			OriginalValue: 100,

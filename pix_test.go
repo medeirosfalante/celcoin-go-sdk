@@ -22,6 +22,9 @@ func TestCreatePixBrCodeStatic(t *testing.T) {
 		},
 	}
 	brCoreResponse, errAPI, err := client.CreatePixBrCodeStatic(bankTransfer)
+	t.Errorf("brCoreResponse : %#v", brCoreResponse)
+	t.Errorf("errAPI : %#v", errAPI)
+	t.Errorf("err : %#v", err)
 	if err != nil {
 		t.Errorf("err : %s", err)
 		return
@@ -32,6 +35,29 @@ func TestCreatePixBrCodeStatic(t *testing.T) {
 	}
 	if brCoreResponse == nil {
 		t.Error("payResponse is null")
+		return
+	}
+}
+
+func TestGetDic(t *testing.T) {
+	godotenv.Load(".env.test")
+	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), true)
+	brCoreResponse, errAPI, err := client.GetDic("62252168048")
+	if err != nil {
+		t.Errorf("err : %s", err)
+		return
+	}
+	if errAPI != nil {
+		t.Errorf("errAPI : %#v", errAPI)
+		return
+	}
+	if brCoreResponse == nil {
+		t.Error("payResponse is null")
+		return
+	}
+
+	if brCoreResponse.Key == "" {
+		t.Error("key is invalid")
 		return
 	}
 }

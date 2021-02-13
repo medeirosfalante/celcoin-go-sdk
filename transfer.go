@@ -15,7 +15,7 @@ type BankTransfer struct {
 	InstitutionCode  int     `json:"institutionCode"`
 	Name             string  `json:"name"`
 	Value            float32 `json:"value"`
-	BankAccountType  int     `json:"bankAccountType"`
+	BankAccountType  string  `json:"bankAccountType"`
 }
 
 type BankTransferResponse struct {

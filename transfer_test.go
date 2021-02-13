@@ -19,7 +19,7 @@ func TestBankTransfer(t *testing.T) {
 		InstitutionCode: 341,
 		Name:            "Ryan Cauã Felipe Araújo",
 		Value:           10,
-		BankAccountType: 0,
+		BankAccountType: "cc",
 	}
 	payAuthorizeResponse, errAPI, err := client.BankTransfer(bankTransfer)
 	if err != nil {

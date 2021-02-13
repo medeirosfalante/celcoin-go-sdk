@@ -22,7 +22,7 @@ type CelcoinClient struct {
 }
 
 type Error struct {
-	ErrorCode string `json:"errorCode"`
+	ErrorCode int    `json:"errorCode"`
 	Message   string `json:"message"`
 	Body      string `json:"body"`
 }

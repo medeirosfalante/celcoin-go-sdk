@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -21,7 +22,7 @@ type CelcoinClient struct {
 }
 
 type Error struct {
-	ErrorCode string `json:"errorCode"`
+	ErrorCode int    `json:"errorCode"`
 	Message   string `json:"message"`
 	Body      string `json:"body"`
 }
@@ -52,6 +53,7 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 	}
 
 	endpoint := fmt.Sprintf("%s/%s", url, action)
+	log.Printf("endpoint %s \n", endpoint)
 	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(body))
 	if err != nil {
 		return err, nil
@@ -69,6 +71,8 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 		return err, nil
 	}
 	bodyResponse, err := ioutil.ReadAll(res.Body)
+	log.Printf("bodyResponse %s \n", bodyResponse)
+	log.Printf("res.StatusCode  %d \n", res.StatusCode)
 	if res.StatusCode > 201 {
 		var errAPI Error
 		err = json.Unmarshal(bodyResponse, &errAPI)
@@ -122,12 +126,10 @@ func (celcoin *CelcoinClient) RequestToken() (*TokenResponse, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-
 	bodyResponse, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
-
 	err = json.Unmarshal(bodyResponse, &tokenResponse)
 	if err != nil {
 		return nil, err

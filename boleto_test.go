@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"github.com/rafaeltokyo/celcoin-go-sdk"
+	"github.com/medeirosfalante/celcoin-go-sdk"
 )
 
 func TestBankslip(t *testing.T) {

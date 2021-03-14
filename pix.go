@@ -34,7 +34,7 @@ type CreditParty struct {
 	Key         string `json:"key"`
 	Bank        string `json:"bank"`
 	Endtoendid  string `json:"endtoendid"`
-	Branch      string `json:"branch"`
+	Branch      int    `json:"branch"`
 	Account     string `json:"account"`
 	AccountType string `json:"accountType"`
 	TaxID       string `json:"taxId"`
@@ -73,7 +73,7 @@ type DictResponse struct {
 type PixAccount struct {
 	OpeningDate   string `json:"openingDate"`
 	Participant   string `json:"participant"`
-	Branch        int    `json:"branch"`
+	Branch        int32  `json:"branch"`
 	AccountNumber string `json:"accountNumber"`
 	AccountType   string `json:"accountType"`
 }

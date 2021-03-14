@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/joho/godotenv"
-	"github.com/rafaeltokyo/celcoin-go-sdk"
+	"github.com/medeirosfalante/celcoin-go-sdk"
 )
 
 func TestCreateTopupsDigitalProvider(t *testing.T) {

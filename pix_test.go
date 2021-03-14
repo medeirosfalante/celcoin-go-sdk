@@ -65,26 +65,25 @@ func TestCreatePixPayment(t *testing.T) {
 	client := celcoin.NewCelcoinClient(os.Getenv("CELCOIN_USER"), os.Getenv("CELCOIN_PASSWORD"), os.Getenv("ENV"), true)
 
 	payment := celcoin.PaymentFullRequest{
-		Amount:                    10,
-		ClientCode:                "40",
+		Amount:                    10.55,
+		ClientCode:                "BRAIN TST",
 		TransactionIdentification: "",
-		Endtoendid:                "",
+		Endtoendid:                "E5009404420210203130601080362644",
 		DebitParty: celcoin.DebitParty{
-			Account:     "123456789",
+			Account:     "212696124",
 			Branch:      1,
-			TaxID:       "123123123000102",
+			TaxID:       "86403637061",
 			AccountType: "CACC",
-			Name:        "BANCO",
+			Name:        "Carlos Eduardo Garcia de Carvalho",
 		},
 		CreditParty: celcoin.CreditParty{
-			Key:         "01201201201",
-			Bank:        "341",
-			Endtoendid:  "",
-			Branch:      "1",
-			Account:     "123456789",
+			Key:         "a016bc8b-d89a-4f62-be99-5fa0ebb91d77",
+			Bank:        "30306294",
+			Branch:      1,
+			Account:     "105156485",
 			AccountType: "CACC",
-			TaxID:       "123123123000102",
-			Name:        "BANCO",
+			TaxID:       "01548564895",
+			Name:        "Teste Creditor",
 		},
 	}
 	brCoreResponse, errAPI, err := client.CreatePixPayment(&payment)

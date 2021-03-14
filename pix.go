@@ -73,7 +73,7 @@ type DictResponse struct {
 type PixAccount struct {
 	OpeningDate   string `json:"openingDate"`
 	Participant   string `json:"participant"`
-	Branch        int    `json:"branch"`
+	Branch        int32  `json:"branch"`
 	AccountNumber string `json:"accountNumber"`
 	AccountType   string `json:"accountType"`
 }

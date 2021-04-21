@@ -34,7 +34,7 @@ type CreditParty struct {
 	Key         string `json:"key"`
 	Bank        string `json:"bank"`
 	Endtoendid  string `json:"endtoendid"`
-	Branch      int    `json:"branch"`
+	Branch      int32  `json:"branch"`
 	Account     string `json:"account"`
 	AccountType string `json:"accountType"`
 	TaxID       string `json:"taxId"`

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -53,7 +52,6 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 	}
 
 	endpoint := fmt.Sprintf("%s/%s", url, action)
-	log.Printf("endpoint %s \n", endpoint)
 	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(body))
 	if err != nil {
 		return err, nil
@@ -70,9 +68,7 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 	if err != nil {
 		return err, nil
 	}
-	bodyResponse, err := ioutil.ReadAll(res.Body)
-	log.Printf("bodyResponse %s \n", bodyResponse)
-	log.Printf("res.StatusCode  %d \n", res.StatusCode)
+	bodyResponse, _ := ioutil.ReadAll(res.Body)
 	if res.StatusCode > 201 {
 		var errAPI Error
 		err = json.Unmarshal(bodyResponse, &errAPI)
@@ -93,21 +89,21 @@ func (CelcoinClient *CelcoinClient) devProd() string {
 	if CelcoinClient.Env == "develop" {
 		return "https://sandbox-apicorp.celcoin.com.br/v5"
 	}
-	return "https://sandbox-apicorp.celcoin.com.br/v5"
+	return "https://apicorp.celcoin.com.br/v5"
 }
 
 func (CelcoinClient *CelcoinClient) TokenUri() string {
 	if CelcoinClient.Env == "develop" {
 		return "https://sandbox-apicorp.celcoin.com.br/v5"
 	}
-	return "https://sandbox-apicorp.celcoin.com.br/v5"
+	return "https://apicorp.celcoin.com.br/v5"
 }
 
 func (CelcoinClient *CelcoinClient) openfinanceUrl() string {
 	if CelcoinClient.Env == "develop" {
 		return "https://sandbox.openfinance.celcoin.com.br"
 	}
-	return "https://sandbox.openfinance.celcoin.com.br"
+	return "https://api.openfinance.celcoin.com.br"
 }
 
 func (celcoin *CelcoinClient) RequestToken() (*TokenResponse, error) {

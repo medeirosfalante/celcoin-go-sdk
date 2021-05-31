@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -69,6 +70,8 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 		return err, nil
 	}
 	bodyResponse, _ := ioutil.ReadAll(res.Body)
+	log.Printf("endpoint \n%s\n", endpoint)
+	log.Printf("bodyResponse \n%s\n", bodyResponse)
 	if res.StatusCode > 201 {
 		var errAPI Error
 		err = json.Unmarshal(bodyResponse, &errAPI)

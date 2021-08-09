@@ -24,7 +24,7 @@ type PaymentFullResponse struct {
 
 type DebitParty struct {
 	Account     string `json:"account"`
-	Branch      int32  `json:"branch"`
+	Branch      string `json:"branch"`
 	TaxID       string `json:"taxId"`
 	AccountType string `json:"accountType"`
 	Name        string `json:"name"`

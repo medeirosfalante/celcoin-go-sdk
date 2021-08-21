@@ -71,7 +71,7 @@ func TestCreatePixPayment(t *testing.T) {
 		Endtoendid:                "E5009404420210203130601080362644",
 		DebitParty: celcoin.DebitParty{
 			Account:     "212696124",
-			Branch:      1,
+			Branch:      "0001",
 			TaxID:       "86403637061",
 			AccountType: "CACC",
 			Name:        "Carlos Eduardo Garcia de Carvalho",

@@ -13,6 +13,8 @@ type PaymentFullRequest struct {
 	Endtoendid                string      `json:"endtoendid"`
 	DebitParty                DebitParty  `json:"debitParty"`
 	CreditParty               CreditParty `json:"creditParty"`
+	InitiationType            string      `json:"initiationType"`
+	TaxIdPaymentInitiator     string      `json:"taxIdPaymentInitiator"`
 }
 
 type PaymentFullResponse struct {

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -22,7 +21,7 @@ type CelcoinClient struct {
 }
 
 type Error struct {
-	ErrorCode int    `json:"errorCode"`
+	ErrorCode string `json:"errorCode"`
 	Message   string `json:"message"`
 	Body      string `json:"body"`
 }
@@ -70,14 +69,8 @@ func (celcoin *CelcoinClient) Request(method, action string, body []byte, out in
 		return err, nil
 	}
 	bodyResponse, _ := ioutil.ReadAll(res.Body)
-	log.Printf("endpoint \n%s\n", endpoint)
-	log.Printf("bodyResponse \n%s\n", bodyResponse)
 	if res.StatusCode > 201 {
 		var errAPI Error
-		err = json.Unmarshal(bodyResponse, &errAPI)
-		if err != nil {
-			return err, nil
-		}
 		errAPI.Body = string(bodyResponse)
 		return nil, &errAPI
 	}

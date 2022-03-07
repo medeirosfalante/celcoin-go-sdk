@@ -44,7 +44,7 @@ type CreditParty struct {
 }
 
 type StaticBRCodeCreationRequest struct {
-	Amount                    float32   `json:"amount"`
+	Amount                    string    `json:"amount"`
 	Key                       string    `json:"key"`
 	TransactionIdentification string    `json:"transactionIdentification"`
 	Merchant                  *Merchant `json:"merchant"`
